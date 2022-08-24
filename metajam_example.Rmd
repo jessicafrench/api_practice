@@ -1,0 +1,29 @@
+---
+title: "metajam example"
+author: "Jessica French"
+date: "2022-08-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(metajam)
+library(here)
+```
+
+```{r}
+data_object <- "https://knb.ecoinformatics.org/knb/d1/mn/v2/object/urn%3Auuid%3A7fc6f6db-c5ea-426a-a743-1f2edafb43b8"
+path <- here()
+
+download_d1_data(data_object, path = path)
+
+alaska_language_data <- read_d1_files("~/Github/api_practice/doi_10.5063_F1CJ8BPH__household_language__csv/")
+
+alaska_language_df <- alaska_language_data$data
+
+
+```
+

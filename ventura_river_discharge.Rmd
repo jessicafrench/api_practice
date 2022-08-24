@@ -1,0 +1,40 @@
+---
+title: "Ventura River"
+author: "Jessica French"
+date: "2022-08-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dataRetrieval)
+library(tidyverse)
+```
+
+
+```{r}
+siteNo <- "11118500"
+pCode <- "00060"
+start.date <- "2019-10-01"
+end.date <- "2020-10-05"
+
+ventura <- readNWISuv(siteNumbers = siteNo,
+                      parameterCd = pCode,
+                      startDate = start.date,
+                      endDate = end.date
+)
+
+ventura <- renameNWISColumns(ventura)
+names(ventura)
+```
+
+```{r}
+ventura_plot <- ggplot(data = ventura, aes(x = dateTime,
+                                           y = Flow_Inst)) + geom_line()
+
+ventura_plot
+```
+
