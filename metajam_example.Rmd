@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(metajam)
 library(here)
+library(ggExtra)
 ```
 
 ```{r}
@@ -24,6 +25,32 @@ alaska_language_data <- read_d1_files("~/Github/api_practice/doi_10.5063_F1CJ8BP
 
 alaska_language_df <- alaska_language_data$data
 
+```
 
+```{r}
+english_percent <- alaska_language_df |> 
+  filter(Year %in% seq(from = 2009, to = 2015)) |> 
+  group_by(SASAP.Region) |> 
+  summarize(regional_english = sum(speak_only_english), 
+            regional_total = sum(total)) |> 
+  mutate(percent_english_only = regional_english / regional_total, 
+         SASAP.Region = fct_reorder(SASAP.Region, percent_english_only)) 
+        
+
+ggplot(data = english_percent, aes(x = percent_english_only,
+                                   y = SASAP.Region)) +
+  geom_col()
+
+```
+
+```{r}
+data_object <- "https://doi.org/10.6073/pasta/1dd1a59a7e6fbe95fdf8736477d81b83"
+path <- here()
+
+download_d1_data(data_object, path = path)
+
+luquillo_data_files <- read_d1_files("~/Github/api_practice/doi_10.5063_F1CJ8BPH__household_language__csv/")
+
+alaska_language_df <- alaska_language_data$data
 ```
 
